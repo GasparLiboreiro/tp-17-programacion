@@ -69,81 +69,114 @@ function recuperar(pedido,respuesta) {
     respuesta.writeHead(200, {'Content-Type': 'text/html'});
      pagina=
       `<!doctype html><html><head></head><body>
-      <script>let nivel=2;
+      <center><h1 id="as">a</h1></center>
+
+	<script>
+			let nivel =2;			
+
+			function conseguirArray(lvl){
+				let nums=[]
+		
+				for(let x=0, y=0; x<lvl; x++){
+					y=Math.floor(Math.random() * 10); //numero aleatorio entre 0 y 9 inclusives (integers)+
+					if(x==0){
+						nums.push(y);
+					}
+					else{
+						while(esta(nums, y)){
+							y=Math.floor(Math.random() * 10);
+						}
+						nums.push(y);
+					}
+				}
+				return nums;
+			}
+		
+			function esta(valores, n){
+				let eone=false;
+				for(let x=0; x<valores.length; x++){
+					if(valores[x]==n){
+						eone=true;
+					}
+				}
+				return eone;
+			}
+			
+			function sleep(millis)
+			{
+				var date = new Date();
+				var curDate = null;
+				do { curDate = new Date(); }
+				while(curDate-date < millis);
+			}
+
+			let h3 = document.getElementById("as");
+			
+			
+			
+			function mostrarNumeros(){
+				let arr =conseguirArray(nivel);
+				console.log(arr);
+				let numeros;
+				let tiempoExtra=0;
+				for(let x=0; x<nivel;x++){
+					tiempoExtra+=1000;
+				}
+				let y=1;
+				h3.innerHTML=arr[0];
+				let nn = window.setInterval(() =>{
+					h3.innerHTML=arr[y];
+					if(y==nivel-1){
+						clearInterval(nn);
+					}
+					y++;
+				}, 1000);
+
+
+				let nm = window.setInterval(() =>{
+					h3.innerHTML = " ";
+					clearInterval(nm);
+					
+				},500+tiempoExtra)
+				let mm = window.setInterval(() =>{
+					numeros = window.prompt("que numeros viste?","");
+					clearInterval(mm);
+				}, 1000+tiempoExtra	)
+				let mn = window.setInterval(() =>{
+					let numerosArray;
+					for(let x=0; x<arr.length;x++){
+						if(x==0){
+							numerosArray=arr[0];
+						}
+						else{
+							numerosArray*=10;
+							numerosArray+=arr[x];
+						}
+					}
+					if(numeros==numerosArray && nivel<=9){
+						nivel++;
+						alert("Muy bien");
+						mostrarNumeros();
+					}else if(nivel==10){
+						h3.innerHTML = "Llegaste a los 10 numeros recordados!! Ganaste";
+					}else{
+						h3.innerHTML = "Perdiste, llegaste a los "+nivel+" niveles superados";
+					}
+					clearInterval(mn);
+				}, 3500+tiempoExtra)
+
+				
+
+
+			}
+		
+		
+
+			mostrarNumeros();
 			
 		
-			
-			
-			
 		
-      function conseguirArray(lvl){
-        let nums=[]
-      
-        for(let x=0, y=0; x<lvl; x++){
-          y=Math.floor(Math.random() * 10); //numero aleatorio entre 0 y 9 inclusives (integers)+
-          if(x==0){
-            nums.push(y);
-          }
-          else{
-            while(esta(nums, y)){
-              y=Math.floor(Math.random() * 10);
-            }
-            nums.push(y);
-          }
-        }
-        return nums;
-      }
-      
-      function esta(valores, n){
-        let eone=false;
-        for(let x=0; x<valores.length; x++){
-          if(valores[x]==n){
-            eone=true;
-          }
-        }
-        return eone;
-      }
-      
-      
-      
-      
-      function mostrarNumeros(){
-        let arr =conseguirArray(nivel);
-        
-        let numeros;
-        let tiempoExtra=0;
-        
-        alert(arr);
-        
-        numeros = window.prompt("que numeros viste?","");
-        let numerosArray;
-        for(let x=0; x<arr.length;x++){
-          if(x==0){
-            numerosArray=arr[0];
-          }
-          else{
-            numerosArray*=10;
-            numerosArray+=arr[x];
-          }
-        }
-        if(numerosArray==numeros && nivel!=10){
-          nivel++;
-          alert("Muy bien");
-          mostrarNumeros();
-        }
-        else if(nivel==10){
-          alert("Llegaste a los 10 numeros recordados!! Ganaste");
-        }
-        else{
-          alert("perdiste, llegaste al nivel "+nivel);
-        }
-        
-        
-      
-      
-      }
-      
-      mostrarNumeros();</script></body></html>`;
+		</script></body></html>`;
       
     respuesta.end(pagina);
 
